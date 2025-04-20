@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends "layout.html" %}
+{% block content %}
+<h2>Ingredients Expiring Soon</h2>
+<ul id="alerts-list"></ul>
+
+<script>
+  fetch("/api/alerts/soon")
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("alerts-list");
+      if (data.length === 0) {
+        list.innerHTML = "<li>All ingredients are good to go! 🎉</li>";
+      }
+      data.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} expiring on ${item.expiration_date}`;
+        list.appendChild(li);
+      });
+    });
+</script>
+{% endblock %}
