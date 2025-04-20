@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<h2>My Bar Inventory</h2>
+
+<form id="add-item-form">
+  <input type="text" id="name" placeholder="Ingredient name" required />
+  <input type="text" id="category" placeholder="Category" required />
+  <input type="date" id="expiration_date" />
+  <button type="submit">Add to Inventory</button>
+</form>
+
+<ul id="inventory-list"></ul>
+
+<script>
+  function loadInventory() {
+    fetch("/api/inventory/")
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("inventory-list");
+        list.innerHTML = "";
+        data.forEach(item => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            ${item.name} (${item.category})
+            <button onclick="deleteItem('${item.name}')">❌</button>
+          `;
+          list.appendChild(li);
+        });
+      });
+  }
+
+  function deleteItem(name) {
+    fetch(`/api/inventory/${encodeURIComponent(name)}`, {
+      method: "DELETE"
+    }).then(() => loadInventory());
+  }
+
+  document.getElementById("add-item-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const category = document.getElementById("category").value;
+    const expiration = document.getElementById("expiration_date").value || null;
+
+    fetch("/api/inventory/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, category, expiration_date: expiration })
+    }).then(() => {
+      document.getElementById("add-item-form").reset();
+      loadInventory();
+    });
+  });
+
+  loadInventory();
+</script>
+{% endblock %}

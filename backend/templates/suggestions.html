@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>What Can You Make? 🍸</h2>
+
+<ul id="suggestion-list"></ul>
+
+<script>
+  fetch("/api/suggestions/available")
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("suggestion-list");
+      list.innerHTML = "";
+
+      if (data.length === 0) {
+        list.innerHTML = "<li>No matching cocktails found. Try adding more ingredients!</li>";
+      }
+
+      data.forEach(drink => {
+        const item = document.createElement("li");
+        item.innerHTML = `
+          <strong>${drink.name}</strong><br/>
+          ✅ You have: ${drink.matched.join(", ")}<br/>
+          ❌ Missing: ${drink.missing.join(", ") || "None"}<br/>
+          <em>${drink.instructions}</em><br/><br/>
+        `;
+        list.appendChild(item);
+      });
+    });
+</script>
+
+<hr style="margin: 2rem 0; border: 1px solid #444;">
+
+<h2>💡 Ask AI for a Custom Cocktail Recommendation</h2>
+<form id="ai-form">
+  <input type="text" id="ai-prompt" placeholder="e.g. I want something refreshing with vodka" required />
+  <button type="submit">Ask AI 🍹</button>
+</form>
+
+<pre id="ai-response" style="white-space: pre-wrap; background: #2a2540; padding: 1rem; border-radius: 8px; margin-top: 1rem; color: #7fdbda;"></pre>
+
+<script>
+  document.getElementById("ai-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const prompt = document.getElementById("ai-prompt").value;
+    const responseBox = document.getElementById("ai-response");
+
+    responseBox.textContent = "Asking the bartender... 🍸";
+
+    fetch("/api/ai/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    })
+      .then(res => res.json())
+      .then(data => {
+        responseBox.textContent = data.recommendation || "No suggestion.";
+      })
+      .catch(() => {
+        responseBox.textContent = "Something went wrong while talking to the AI bartender.";
+      });
+  });
+</script>
+
+{% endblock %}
