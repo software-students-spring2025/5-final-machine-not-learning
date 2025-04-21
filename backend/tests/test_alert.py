@@ -1,0 +1,24 @@
+import pytest
+from datetime import datetime, timedelta
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from app import create_app
+from app.db import get_inventory_collection
+
+@pytest.fixture
+def client():
+    app = create_app()
+    app.config["TESTING"] = True
+    with app.test_client() as client:
+        yield client
+
+def test_expiring_alert(client):
+    db = get_inventory_collection()
+    db.delete_many({})
+    soon = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")
+    db.insert_one({"name": "lime juice", "expiration_date": soon})
+    response = client.get("/api/alerts/soon")
+    assert response.status_code == 200
+    assert any("lime juice" in item["name"] for item in response.get_json())
