@@ -12,6 +12,9 @@ jobs:
   build-test-push:
     runs-on: ubuntu-latest
 
+    env:
+      SECRET_KEY: dev-secret
+
     services:
       mongodb:
         image: mongo:6.0
