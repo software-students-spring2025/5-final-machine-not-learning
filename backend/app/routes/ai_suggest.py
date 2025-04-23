@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 import openai
 import os
 from dotenv import load_dotenv
+from flask_login import current_user
 
 load_dotenv()
 
@@ -36,7 +37,7 @@ def ai_recommend():
         )
 
         result = response.choices[0].message.content
-        return jsonify({"recommendation": result})
+        return jsonify({"recommendation": result, "user_logged": current_user.is_authenticated})
 
     except Exception as e:
         print("❌ AI ERROR:", e)

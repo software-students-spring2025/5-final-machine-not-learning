@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from ..db import get_inventory_collection
 from datetime import datetime, timedelta
+from flask_login import current_user
 
 alert_bp = Blueprint('alert', __name__)
 collection = get_inventory_collection()
@@ -10,7 +11,7 @@ def get_expiring_soon():
     today = datetime.utcnow()
     soon = today + timedelta(days=5)
 
-    items = list(collection.find({}, {"_id": 0}))
+    items = list(collection.find({"user_id": current_user.id}, {"_id": 0}))
     expiring_items = []
 
     for item in items:
