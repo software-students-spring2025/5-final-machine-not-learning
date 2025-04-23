@@ -16,9 +16,9 @@
     <h1 class="main-title">Sorry, this feature is for regestered users only...</h1>
     <p class="main-text">However, feel free to check out the <a href="{{ url_for('ask_ai_page') }}" class="btn btn-success">Ask AI</a> feature</p>
 
-    <div class="button-container">
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+    <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="neon-button">Login</a>
+        <a href="{{ url_for('register') }}" class="neon-button">Register</a>
     </div>
   </main>
 </body>

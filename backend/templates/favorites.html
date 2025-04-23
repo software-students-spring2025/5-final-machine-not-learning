@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <h2>My Favorite Recipes</h2>
 
-<ul id="favorites-list"></ul>
+<ul id="favorites-list" class="scrollable-list"></ul>
 
 <script>
   function loadFavorites() {
@@ -16,11 +16,17 @@
         data.forEach(favorite => {
           const li = document.createElement("li");
 
-          if (favorite.hasOwnProperty("name")) {
-            li.innerHTML = `<h1>${favorite.name}</h1>`;
+          if (favorite.name) {
+            li.innerHTML += `<h1>${favorite.name}</h1>`;
           }
-          const text = document.createTextNode(favorite.info);
-          li.appendChild(text);
+          if (favorite.ingredients && favorite.ingredients.length > 0) {
+            li.innerHTML += `<p class="ingredient-line"><strong>🍸 Ingredients:</strong> ${favorite.ingredients.join(", ")}</p>`;
+
+          }
+
+          if (favorite.info) {
+            li.innerHTML += `<em>${favorite.info}</em><br/>`;
+          }
 
           const button = document.createElement("button");
           button.textContent = "❌";
@@ -40,4 +46,6 @@
 
   loadFavorites();
 </script>
+
+
 {% endblock %}
