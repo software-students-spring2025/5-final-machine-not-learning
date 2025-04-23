@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<h2>My Favorite Recipes</h2>
+
+<ul id="favorites-list"></ul>
+
+<script>
+  function loadFavorites() {
+    fetch("/api/favorites/")
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("favorites-list");
+        list.innerHTML = "";
+
+        data.forEach(favorite => {
+          const li = document.createElement("li");
+
+          if (favorite.hasOwnProperty("name")) {
+            li.innerHTML = `<h1>${favorite.name}</h1>`;
+          }
+          const text = document.createTextNode(favorite.info);
+          li.appendChild(text);
+
+          const button = document.createElement("button");
+          button.textContent = "❌";
+          button.addEventListener("click", () => deleteItem(favorite.info));
+          li.appendChild(button);
+
+          list.appendChild(li);
+        });
+      });
+  }
+
+  function deleteItem(info) {
+    fetch(`/api/favorites/${encodeURIComponent(info)}`, {
+      method: "DELETE"
+    }).then(() => loadFavorites());
+  }
+
+  loadFavorites();
+</script>
+{% endblock %}

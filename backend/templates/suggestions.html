@@ -15,50 +15,33 @@
         list.innerHTML = "<li>No matching cocktails found. Try adding more ingredients!</li>";
       }
 
-      data.forEach(drink => {
+      data['matched'].forEach(drink => {
         const item = document.createElement("li");
+        console.log(drink.name);
         item.innerHTML = `
-          <strong>${drink.name}</strong><br/>
+          <h1>${drink.name}</h1>
           ✅ You have: ${drink.matched.join(", ")}<br/>
           ❌ Missing: ${drink.missing.join(", ") || "None"}<br/>
           <em>${drink.instructions}</em><br/><br/>
         `;
+        if (data.user_logged) {
+          const saveButton = document.createElement("button");
+          saveButton.id = "saveButton";
+          saveButton.textContent = "Save to Favorites";
+          saveButton.addEventListener("click", () => {
+            fetch("/api/favorites/", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ info: drink.instructions, name: drink.name })
+            })
+            item.innerHTML += "<br>Saved to favorites!";
+            document.getElementById("saveButton").remove();
+          });
+          item.appendChild(saveButton);
+        }
         list.appendChild(item);
       });
     });
-</script>
-
-<hr style="margin: 2rem 0; border: 1px solid #444;">
-
-<h2>💡 Ask AI for a Custom Cocktail Recommendation</h2>
-<form id="ai-form">
-  <input type="text" id="ai-prompt" placeholder="e.g. I want something refreshing with vodka" required />
-  <button type="submit">Ask AI 🍹</button>
-</form>
-
-<pre id="ai-response" style="white-space: pre-wrap; background: #2a2540; padding: 1rem; border-radius: 8px; margin-top: 1rem; color: #7fdbda;"></pre>
-
-<script>
-  document.getElementById("ai-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const prompt = document.getElementById("ai-prompt").value;
-    const responseBox = document.getElementById("ai-response");
-
-    responseBox.textContent = "Asking the bartender... 🍸";
-
-    fetch("/api/ai/ask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    })
-      .then(res => res.json())
-      .then(data => {
-        responseBox.textContent = data.recommendation || "No suggestion.";
-      })
-      .catch(() => {
-        responseBox.textContent = "Something went wrong while talking to the AI bartender.";
-      });
-  });
 </script>
 
 {% endblock %}

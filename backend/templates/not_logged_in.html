@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <main>
+    <h1 class="main-title">Sorry, this feature is for regestered users only...</h1>
+    <p class="main-text">However, feel free to check out the <a href="{{ url_for('ask_ai_page') }}" class="btn btn-success">Ask AI</a> feature</p>
+
+    <div class="button-container">
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+    </div>
+  </main>
+</body>
+</html>
+{% endblock %}

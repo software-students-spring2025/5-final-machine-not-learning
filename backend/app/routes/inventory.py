@@ -1,20 +1,24 @@
 from flask import Blueprint, request, jsonify
 from ..db import get_inventory_collection
 from datetime import datetime
+from flask_login import current_user
 
 inventory_bp = Blueprint('inventory', __name__)
 collection = get_inventory_collection()
 
 @inventory_bp.route("/", methods=["GET"])
 def get_inventory():
-    items = list(collection.find({}, {"_id": 0}))
+    items = list(collection.find({"user_id": current_user.id}, {"_id": 0}))
+    print(f"result: {items}")
     return jsonify(items)
 
 @inventory_bp.route("/", methods=["POST"])
 def add_item():
     data = request.get_json()
     data["added_on"] = datetime.utcnow().isoformat()
+    data["user_id"] = current_user.id
     collection.insert_one(data)
+    print(f"added {data}")
     return jsonify({"message": "Item added successfully"}), 201
 
 @inventory_bp.route("/<string:name>", methods=["DELETE"])
