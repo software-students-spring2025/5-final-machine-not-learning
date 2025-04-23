@@ -9,7 +9,8 @@ inventory_col = get_inventory_collection()
 
 @suggest_bp.route("/available", methods=["GET"])
 def suggest_from_inventory():
-    inventory_items = list(inventory_col.find({"user_id": current_user.id}, {"_id": 0, "name": 1}))
+    user_id = current_user.id if current_user.is_authenticated else "test-user"
+    inventory_items = list(inventory_col.find({"user_id": user_id}, {"_id": 0, "name": 1}))
     owned_ingredients = [item["name"].lower() for item in inventory_items]
 
     cocktails = get_all_cocktails()

@@ -17,10 +17,15 @@ def test_suggestions(client):
     db = get_inventory_collection()
     db.delete_many({})
     db.insert_many([
-        {"name": "vodka"},
-        {"name": "lime juice"},
-        {"name": "triple sec"}
+        {"name": "vodka", "user_id": "test-user"},
+        {"name": "lime juice", "user_id": "test-user"},
+        {"name": "triple sec", "user_id": "test-user"}
     ])
+
     response = client.get("/api/suggestions/available")
     assert response.status_code == 200
-    assert isinstance(response.get_json(), list)
+
+    data = response.get_json()
+    assert isinstance(data, dict)
+    assert "matched" in data
+    assert isinstance(data["matched"], list)

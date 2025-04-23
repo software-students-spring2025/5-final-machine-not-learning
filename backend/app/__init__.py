@@ -4,13 +4,11 @@ from flask_pymongo import PyMongo
 from dotenv import load_dotenv
 import pymongo
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
-#from db import get_inventory_collection
 from wtforms import StringField, PasswordField, SubmitField
 from flask_wtf import FlaskForm
 from bson.objectid import ObjectId
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt, generate_password_hash, check_password_hash
-
 
 mongo = PyMongo()
 
