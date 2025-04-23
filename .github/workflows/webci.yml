@@ -38,7 +38,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install -r backend/requirements.txt
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov openai==0.28.1
 
       - name: Run tests with coverage
         working-directory: backend
