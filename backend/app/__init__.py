@@ -46,11 +46,11 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        user = db.User.find_one({
-            '_id': ObjectId(user_id)
-        })
+        user = db.User.find_one({'_id': ObjectId(user_id)})
+        if user:
+            return User(user)
+        return None
 
-        return User(user)
 
     class User(UserMixin):
         def __init__(self, user):
