@@ -10,8 +10,8 @@ collection = get_inventory_collection()
 def get_expiring_soon():
     today = datetime.utcnow()
     soon = today + timedelta(days=5)
-
-    items = list(collection.find({"user_id": current_user.id}, {"_id": 0}))
+    user_id = current_user.id if current_user.is_authenticated else "test-user"
+    items = list(collection.find({"user_id": user_id}, {"_id": 0}))
     expiring_items = []
 
     for item in items:

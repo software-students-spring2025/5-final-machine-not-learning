@@ -18,7 +18,11 @@ def test_expiring_alert(client):
     db = get_inventory_collection()
     db.delete_many({})
     soon = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")
-    db.insert_one({"name": "lime juice", "expiration_date": soon})
+    db.insert_one({
+    "name": "lime juice",
+    "expiration_date": soon,
+    "user_id": "test-user"
+})
     response = client.get("/api/alerts/soon")
     assert response.status_code == 200
     assert any("lime juice" in item["name"] for item in response.get_json())

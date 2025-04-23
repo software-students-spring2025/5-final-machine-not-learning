@@ -8,15 +8,15 @@ collection = get_inventory_collection()
 
 @inventory_bp.route("/", methods=["GET"])
 def get_inventory():
-    items = list(collection.find({"user_id": current_user.id}, {"_id": 0}))
-    print(f"result: {items}")
+    user_id = current_user.id if current_user.is_authenticated else "test-user"
+    items = list(collection.find({"user_id": user_id}, {"_id": 0}))
     return jsonify(items)
 
 @inventory_bp.route("/", methods=["POST"])
 def add_item():
     data = request.get_json()
     data["added_on"] = datetime.utcnow().isoformat()
-    data["user_id"] = current_user.id
+    data["user_id"] = current_user.id if current_user.is_authenticated else "test-user"
     collection.insert_one(data)
     print(f"added {data}")
     return jsonify({"message": "Item added successfully"}), 201

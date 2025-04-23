@@ -13,13 +13,12 @@ def client():
     with app.test_client() as client:
         yield client
 
-@patch("openai.OpenAI")
-def test_ai_response(mock_openai, client):
-    mock_chat = mock_openai.return_value.chat.completions.create
-    mock_chat.return_value.choices = [
-        type("obj", (object,), {"message": type("obj", (), {"content": "Test AI suggestion"})})
-    ]
+@patch("openai.ChatCompletion.create")
+def test_ai_response(mock_create, client):
+    mock_create.return_value = {
+        "choices": [{"message": {"content": "Try a Mojito"}}]
+    }
 
-    response = client.post("/api/ai/ask", json={"prompt": "Surprise me"})
+    response = client.post("/api/ai/ask", json={"prompt": "What can I make with rum and mint?"})
     assert response.status_code == 200
-    assert "Test AI suggestion" in response.get_json()["recommendation"]
+    assert "Mojito" in response.get_json().get("recommendation", "")
