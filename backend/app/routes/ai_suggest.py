@@ -19,8 +19,8 @@ def ai_recommend():
         return jsonify({"error": "Missing prompt"}), 400
 
     try:
-        client = openai.OpenAI()
-        response = client.chat.completions.create(
+        # ✅ 使用旧版 openai.ChatCompletion.create() 而不是 openai.OpenAI()
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -36,8 +36,11 @@ def ai_recommend():
             temperature=0.9
         )
 
-        result = response.choices[0].message.content
-        return jsonify({"recommendation": result, "user_logged": current_user.is_authenticated})
+        result = response["choices"][0]["message"]["content"]
+        return jsonify({
+            "recommendation": result,
+            "user_logged": current_user.is_authenticated
+        })
 
     except Exception as e:
         print("❌ AI ERROR:", e)
