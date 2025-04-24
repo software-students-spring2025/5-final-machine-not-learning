@@ -2,7 +2,7 @@
 {% block content %}
 <h2>What Can You Make? 🍸</h2>
 
-<ul id="suggestion-list"></ul>
+<ul id="suggestion-list" class="scrollable-list"></ul>
 
 <script>
   fetch("/api/suggestions/available")
@@ -32,7 +32,13 @@
             fetch("/api/favorites/", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ info: drink.instructions, name: drink.name })
+              body: JSON.stringify({
+                name: drink.name,
+                info: drink.instructions,
+                matched: drink.matched,
+                missing: drink.missing,
+                ingredients: [...drink.matched, ...drink.missing]
+              })
             })
             item.innerHTML += "<br>Saved to favorites!";
             document.getElementById("saveButton").remove();

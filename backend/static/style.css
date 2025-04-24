@@ -12,6 +12,27 @@
   --shadow: 0 0 18px rgba(0, 0, 0, 0.7);
 }
 
+select {
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius);
+  border: none;
+  margin-right: 10px;
+  font-size: 1rem;
+  background: #fff;
+  color: #111;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 12px var(--accent-cyan);
+}
+
+#add-item-form button {
+  margin-top: 1rem;
+}
+
 body {
   font-family: 'Orbitron', sans-serif;
   background: var(--bg-dark);
@@ -74,6 +95,18 @@ input[type="date"] {
   color: #111;
   width: 250px;
   transition: all 0.3s ease;
+}
+
+.ingredient-line {
+  margin: 0.5rem 0;
+  font-style: italic;
+  color: var(--text-main);
+}
+
+.scrollable-list {
+  max-height: 700px; 
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 input:focus {
@@ -163,4 +196,31 @@ pre#ai-response {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+.auth-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.neon-button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  background-color: var(--accent-cyan);
+  color: #000;
+  box-shadow: 0 0 12px var(--accent-cyan);
+  transition: all 0.3s ease;
+}
+
+.neon-button:hover {
+  background-color: var(--accent-yellow);
+  box-shadow: 0 0 16px var(--accent-yellow);
+  transform: scale(1.05);
 }
