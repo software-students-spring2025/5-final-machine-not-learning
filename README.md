@@ -6,11 +6,8 @@
 BarBuddy is your personal cocktail companion. It helps users manage their home bar inventory, receive cocktail suggestions based on available ingredients, track expiring items, and save favorite recipes. Whether you're a seasoned mixologist or just getting started, BarBuddy makes it easy to explore and enjoy cocktails at home.
 
 ---
-
-## 🔗 DockerHub Images
-
-- [Backend Image](https://hub.docker.com/r/yourusername/barbuddy-backend)
-- [Frontend Image](https://hub.docker.com/r/yourusername/barbuddy-frontend)
+## 📦 Docker Images
+- [Web Application](https://hub.docker.com/repository/docker/williamma205/webapp/general)
 
 ---
 
