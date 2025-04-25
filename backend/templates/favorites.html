@@ -12,40 +12,36 @@
       .then(data => {
         const list = document.getElementById("favorites-list");
         list.innerHTML = "";
-
+  
         data.forEach(favorite => {
           const li = document.createElement("li");
-
+  
           if (favorite.name) {
             li.innerHTML += `<h1>${favorite.name}</h1>`;
           }
           if (favorite.ingredients && favorite.ingredients.length > 0) {
             li.innerHTML += `<p class="ingredient-line"><strong>🍸 Ingredients:</strong> ${favorite.ingredients.join(", ")}</p>`;
-
           }
-
-          if (favorite.info) {
-            li.innerHTML += `<em>${favorite.info}</em><br/>`;
+          if (favorite.instructions) {
+            li.innerHTML += `<em>${favorite.instructions}</em><br/>`;
           }
-
+  
           const button = document.createElement("button");
           button.textContent = "❌";
-          button.addEventListener("click", () => deleteItem(favorite.info));
+          button.addEventListener("click", () => deleteItem(favorite.name));
           li.appendChild(button);
-
+  
           list.appendChild(li);
         });
       });
   }
-
-  function deleteItem(info) {
-    fetch(`/api/favorites/${encodeURIComponent(info)}`, {
+  
+  function deleteItem(name) {
+    fetch(`/api/favorites/${encodeURIComponent(name)}`, {
       method: "DELETE"
     }).then(() => loadFavorites());
   }
-
-  loadFavorites();
+  
+  loadFavorites();  
 </script>
-
-
 {% endblock %}
