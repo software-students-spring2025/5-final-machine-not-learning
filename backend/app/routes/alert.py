@@ -1,3 +1,4 @@
+# app/routes/alert.py
 from flask import Blueprint, jsonify
 from ..db import get_inventory_collection
 from datetime import datetime, timedelta
@@ -7,21 +8,27 @@ alert_bp = Blueprint('alert', __name__)
 collection = get_inventory_collection()
 
 @alert_bp.route("/soon", methods=["GET"])
-def get_expiring_soon():
+def get_expiring_and_expired():
     today = datetime.utcnow()
     soon = today + timedelta(days=5)
-    user_id = current_user.id if current_user.is_authenticated else "test-user"
-    items = list(collection.find({"user_id": user_id}, {"_id": 0}))
-    expiring_items = []
+
+    items = list(collection.find({"user_id": current_user.id}, {"_id": 0}))
+    expiring_soon = []
+    expired = []
 
     for item in items:
         exp_date = item.get("expiration_date")
         if exp_date:
             try:
                 exp = datetime.fromisoformat(exp_date)
-                if today <= exp <= soon:
-                    expiring_items.append(item)
+                if exp < today:
+                    expired.append(item)
+                elif today <= exp <= soon:
+                    expiring_soon.append(item)
             except Exception:
                 continue
 
-    return jsonify(expiring_items)
+    return jsonify({
+        "expired": expired,
+        "expiring_soon": expiring_soon
+    })
