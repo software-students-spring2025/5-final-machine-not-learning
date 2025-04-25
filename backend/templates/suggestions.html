@@ -34,15 +34,19 @@
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 name: drink.name,
-                info: drink.instructions,
-                matched: drink.matched,
-                missing: drink.missing,
-                ingredients: [...drink.matched, ...drink.missing]
+                ingredients: drink.ingredients,
+                instructions: drink.instructions
               })
             })
-            item.innerHTML += "<br>Saved to favorites!";
-            document.getElementById("saveButton").remove();
-          });
+            .then(response => {
+              if (response.ok) {
+                item.innerHTML += "<br>Saved to favorites!";
+                saveButton.remove();
+              } else {
+                alert("Failed to save favorite.");
+              }
+            });
+          });          
           item.appendChild(saveButton);
         }
         list.appendChild(item);

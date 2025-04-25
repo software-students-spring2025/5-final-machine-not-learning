@@ -19,10 +19,15 @@ def test_expiring_alert(client):
     db.delete_many({})
     soon = (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")
     db.insert_one({
-    "name": "lime juice",
-    "expiration_date": soon,
-    "user_id": "test-user"
-})
+        "name": "lime juice",
+        "expiration_date": soon,
+        "user_id": "test-user"
+    })
+
     response = client.get("/api/alerts/soon")
     assert response.status_code == 200
-    assert any("lime juice" in item["name"] for item in response.get_json())
+
+    data = response.get_json()
+    combined = data.get("expired", []) + data.get("expiring_soon", [])
+
+    assert any(item["name"] == "lime juice" for item in combined)

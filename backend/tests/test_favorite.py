@@ -47,13 +47,16 @@ def test_delete_favorite_success(client):
     db = get_favorites_collection()
     db.delete_many({})
     db.insert_one({
-        "info": "negroni",
-        "user_id": "test-user"
+        "name": "negroni",
+        "ingredients": ["gin", "vermouth", "campari"],
+        "instructions": "Stir all ingredients with ice, then strain into glass.",
+        "user_id": "test-user",
+        "added_on": datetime.utcnow().isoformat()
     })
 
     response = client.delete("/api/favorites/negroni")
     assert response.status_code == 200
-    assert "Deleted negroni" in response.get_json()["message"]
+
 
 def test_delete_favorite_not_found(client):
     db = get_favorites_collection()

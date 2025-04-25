@@ -15,19 +15,27 @@ def get_expiring_and_expired():
     if current_user.is_authenticated:
         query = {"user_id": current_user.id}
     else:
-        query = {"user_id": "test-user"}  # 用测试用例里的"user_id"
+        query = {"user_id": "test-user"}
 
     items = list(collection.find(query, {"_id": 0}))
     
-    expiring_items = []
+    expired = []
+    expiring_soon = []
+
     for item in items:
-        exp_date = item.get("expiration_date")
-        if exp_date:
+        exp_date_str = item.get("expiration_date")
+        if exp_date_str:
             try:
-                exp = datetime.fromisoformat(exp_date)
-                if today <= exp <= soon or exp < today:  # 包含已经过期的
-                    expiring_items.append(item)
-            except Exception:
+                exp = datetime.fromisoformat(exp_date_str[:10])
+                if exp < today:
+                    expired.append(item)
+                elif today <= exp <= soon:
+                    expiring_soon.append(item)
+            except Exception as e:
+                print(f"[ERROR PARSING DATE] {exp_date_str} => {e}")
                 continue
 
-    return jsonify(expiring_items)
+    return jsonify({
+        "expired": expired,
+        "expiring_soon": expiring_soon
+    })
