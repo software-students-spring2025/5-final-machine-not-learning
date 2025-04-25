@@ -1,22 +1,41 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% extends "layout.html" %}
 {% block content %}
-<h2>Ingredients Expiring Soon</h2>
-<ul id="alerts-list"></ul>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<h2>Ingredient Alerts 🚨</h2>
+
+<h3>⚠️ Expired Ingredients</h3>
+<ul id="expired-list"></ul>
+
+<h3>⏳ Expiring Soon (within 5 days)</h3>
+<ul id="expiring-list"></ul>
 
 <script>
   fetch("/api/alerts/soon")
     .then(res => res.json())
     .then(data => {
-      const list = document.getElementById("alerts-list");
-      if (data.length === 0) {
-        list.innerHTML = "<li>All ingredients are good to go! 🎉</li>";
+      const expiredList = document.getElementById("expired-list");
+      const expiringList = document.getElementById("expiring-list");
+
+      if (data.expired.length === 0) {
+        expiredList.innerHTML = "<li>None! 🎉</li>";
+      } else {
+        data.expired.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} expired on ${item.expiration_date}`;
+          expiredList.appendChild(li);
+        });
       }
-      data.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.name} expiring on ${item.expiration_date}`;
-        list.appendChild(li);
-      });
+
+      if (data.expiring_soon.length === 0) {
+        expiringList.innerHTML = "<li>None! 🎉</li>";
+      } else {
+        data.expiring_soon.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} expiring on ${item.expiration_date}`;
+          expiringList.appendChild(li);
+        });
+      }
     });
 </script>
 {% endblock %}

@@ -18,8 +18,9 @@ def test_add_favorite(client):
     db = get_favorites_collection()
     db.delete_many({})
     payload = {
-        "info": "vodka tonic",
-        "category": "cocktail"
+        "name": "vodka tonic",
+        "ingredients": ["vodka", "tonic water"],
+        "instructions": "Mix vodka and tonic water with ice and serve."
     }
 
     response = client.post("/api/favorites/", json=payload)
