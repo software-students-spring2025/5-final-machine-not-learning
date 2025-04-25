@@ -15,14 +15,19 @@ def get_favorites():
 @favorites_bp.route("/", methods=["POST"])
 def add_favorite():
     data = request.get_json()
-    if not data.get("name") or not data.get("info"):
-        return jsonify({"error": "Missing name or instructions"}), 400
-    data["added_on"] = datetime.utcnow().isoformat()
-    data["user_id"] = current_user.id if current_user.is_authenticated else "test-user"
-    data.setdefault("matched", [])
-    data.setdefault("missing", [])
-    data.setdefault("ingredients", [])
-    collection.insert_one(data)
+
+    if not all(k in data for k in ("name", "ingredients", "instructions")):
+        return jsonify({"error": "Missing fields in favorite data"}), 400
+
+    favorite = {
+        "name": data["name"],
+        "ingredients": data["ingredients"],
+        "instructions": data["instructions"],
+        "added_on": datetime.utcnow().isoformat(),
+        "user_id": current_user.id if current_user.is_authenticated else "test-user"
+    }
+
+    collection.insert_one(favorite)
     return jsonify({"message": "Item added successfully"}), 201
 
 
