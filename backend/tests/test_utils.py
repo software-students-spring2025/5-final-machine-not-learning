@@ -27,18 +27,29 @@ mock_cocktails = [
     }
 ]
 
+def get_test_data():
+    """Return a copy of the mock cocktail data."""
+
+    return mock_cocktails
 
 def test_match_full_match():
+    """Test when all ingredients match exactly."""
+
     owned = ["vodka", "lime juice", "triple sec"]
     results = match_cocktails_smart(mock_cocktails, owned)
     assert any("Test Cocktail 1" in d["name"] for d in results)
 
 def test_match_partial_match():
+    """Test when only some ingredients are owned."""
+
     owned = ["vodka", "lime juice"]
     results = match_cocktails_smart(mock_cocktails, owned)
     assert any(d["name"] == "Test Cocktail 1" and "triple sec" in d["missing"] for d in results)
 
 def test_no_match():
+    """Test when none of the ingredients match."""
+
     owned = ["beer"]
     results = match_cocktails_smart(mock_cocktails, owned)
     assert len(results) == 0
+    
