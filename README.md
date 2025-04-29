@@ -63,5 +63,4 @@ docker-compose up --build
 ```
 
 App will be available at `http://127.0.0.1:8080`
-
 ---
