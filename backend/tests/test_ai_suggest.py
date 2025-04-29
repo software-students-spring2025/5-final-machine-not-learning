@@ -1,3 +1,10 @@
+# tests/test_ai.py
+
+"""
+Unit test for the AI response functionality on the `/api/ai/ask` endpoint.
+Mocks the OpenAI API call and verifies that the correct response is returned.
+"""
+
 import pytest
 from flask import json
 from unittest.mock import patch
@@ -6,8 +13,14 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app import create_app
+
+
 @pytest.fixture
 def client():
+    """
+    Fixture that provides a Flask test client for simulating HTTP requests.
+    Configures the app for testing mode.
+    """
     app = create_app()
     app.config["TESTING"] = True
     with app.test_client() as client:
@@ -15,10 +28,20 @@ def client():
 
 @patch("openai.ChatCompletion.create")
 def test_ai_response(mock_create, client):
+    """
+    Test that the AI returns the correct cocktail recommendation based on a prompt.
+    Mocks the OpenAI API's `ChatCompletion.create` method to return a controlled response.
+    """
+
+    #define the mock return value for the AI API call
     mock_create.return_value = {
         "choices": [{"message": {"content": "Try a Mojito"}}]
     }
 
-    response = client.post("/api/ai/ask", json={"prompt": "What can I make with rum and mint?"})
+    response = client.post(
+        "/api/ai/ask", json={"prompt": "What can I make with rum and mint?"}
+    )
+
     assert response.status_code == 200
+    
     assert "Mojito" in response.get_json().get("recommendation", "")
