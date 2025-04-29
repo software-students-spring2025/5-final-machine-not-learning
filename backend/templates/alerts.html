@@ -25,6 +25,7 @@
           li.textContent = `${item.name} expired on ${item.expiration_date}`;
           expiredList.appendChild(li);
         });
+      
       }
 
       if (data.expiring_soon.length === 0) {
@@ -38,4 +39,11 @@
       }
     });
 </script>
+
+
+
+
+
+
+
 {% endblock %}

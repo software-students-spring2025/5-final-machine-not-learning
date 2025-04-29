@@ -15,16 +15,16 @@ Beyond just suggestions, BarBuddy monitors items nearing expiration, helping you
 
 ## 👥 Team Members
 
-- [Xiaowei Ma](https://github.com/maxiaowei)
-- [Mandy Mao](https://github.com/WillliamMa)
-- [Rishi Rana](https://github.com/Rishi-Rana1)
-- [Max Luetke Meyring](https://github.com/maxlmeyring)
+- 1: [Xiaowei Ma](https://github.com/maxiaowei)
+- 2: [Mandy Mao](https://github.com/WillliamMa)
+- 3: [Rishi Rana](https://github.com/Rishi-Rana1)
+- 4: [Max Luetke Meyring](https://github.com/maxlmeyring)
 
 ---
 
 ## Digital Ocean Deployed URL
 
-You can access the application from:
+Please access the application via the following link:
 
 https://bartender-6r98j.ondigitalocean.app
 
