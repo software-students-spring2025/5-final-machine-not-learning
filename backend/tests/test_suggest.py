@@ -8,14 +8,29 @@ from app.db import get_inventory_collection
 
 @pytest.fixture
 def client():
+    """
+    Pytest fixture that creates a test client from the Flask app.
+    Enables route testing without running a real server.
+    """
+
     app = create_app()
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client
 
 def test_suggestions(client):
+    """
+    Test the `/api/suggestions/available` route.
+    
+    Inserts test ingredients into the database for a fake user,
+    sends a GET request to the route, and checks that the response is correct.
+    """
+
+    #get a handle on the inventory collection and reset its contents
     db = get_inventory_collection()
     db.delete_many({})
+
+    #insert mock ingredients for test user
     db.insert_many([
         {"name": "vodka", "user_id": "test-user"},
         {"name": "lime juice", "user_id": "test-user"},
