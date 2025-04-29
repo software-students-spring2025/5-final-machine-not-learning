@@ -13,13 +13,29 @@
 import json
 from pathlib import Path
 
+#initialize a global variable to store cached cocktail data
 cocktail_cache = []
 
 def get_all_cocktails():
+    """
+    Retrieve all cocktails from the cache or the cached file.
+
+    This function checks if the cocktail cache is populated. If so, it returns the cached data.
+    Otherwise, it loads the cocktail data from a JSON file (`cocktail_cache.json`) and caches it.
+    
+    Returns:
+        list: A list of all cocktails loaded from the cache or file.
+    
+    Raises:
+        FileNotFoundError: If the `cocktail_cache.json` file is missing.
+    """
+
     global cocktail_cache
+
     if cocktail_cache:
         return cocktail_cache
 
+    #get the current directory path where the script is located
     CURRENT_DIR = Path(__file__).parent
     cache_path = CURRENT_DIR / "cocktail_cache.json"
 
