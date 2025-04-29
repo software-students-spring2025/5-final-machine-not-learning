@@ -3,9 +3,9 @@
 
 [![Web App CI](https://github.com/software-students-spring2025/5-final-machine-not-learning/actions/workflows/webci.yml/badge.svg)](https://github.com/software-students-spring2025/5-final-machine-not-learning/actions/workflows/webci.yml)
 
-BarBuddy is your ultimate personal cocktail companion, designed to elevate your at-home mixology experience. Whether you're a seasoned bartender or just beginning your journey into the world of cocktails, BarBuddy offers the perfect blend of convenience and inspiration. The app helps you effortlessly manage your home bar inventory by keeping track of the spirits, mixers, and garnishes you have on hand. Based on your current ingredients, BarBuddy suggests a wide variety of cocktail recipes tailored to your personal preferences and available supplies.
+BarBuddy is your ultimate personal cocktail companion, crafted to enhance your at-home mixology adventures. Whether you're a seasoned pro or just starting to explore the world of cocktails, BarBuddy provides the ideal mix of inspiration and convenience. The app makes it simple to manage your home bar inventory by tracking the spirits, mixers, and garnishes you have on hand. Using your current ingredients, BarBuddy recommends a diverse selection of cocktail recipes tailored to your preferences and supplies.
 
-In addition to recommendations, BarBuddy tracks items that are nearing expiration, ensuring you get the most out of your stock and reduce waste. You can also save your favorite drinks, build a personalized cocktail library, and explore new recipes with ease. With an intuitive interface and smart features, BarBuddy turns every night into an opportunity to discover, mix, and enjoy delicious cocktails—right from the comfort of your home.
+Beyond just suggestions, BarBuddy monitors items nearing expiration, helping you make the most of your inventory while reducing waste. You can easily save your favorite drinks, create a custom cocktail library, and explore exciting new recipes. With a sleek interface and intelligent features, BarBuddy transforms every night into a chance to discover, craft, and enjoy amazing cocktails—all from the comfort of your home.
 
 ---
 ## 📦 Docker Images
